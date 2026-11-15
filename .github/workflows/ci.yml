@@ -1,0 +1,39 @@
+name: CI — validar alterações
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Detectar projeto Node
+        id: detect
+        run: |
+          if [ -f package.json ]; then echo "node=true" >> "$GITHUB_OUTPUT"; else echo "node=false" >> "$GITHUB_OUTPUT"; fi
+      - uses: actions/setup-node@v4
+        if: steps.detect.outputs.node == 'true'
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: package-lock.json
+        continue-on-error: true
+      - name: Instalar dependências
+        if: steps.detect.outputs.node == 'true'
+        run: |
+          if [ -f package-lock.json ]; then npm ci; else echo "Falta package-lock.json"; exit 1; fi
+      - name: Verificar scripts disponíveis
+        if: steps.detect.outputs.node == 'true'
+        run: |
+          node -e 'const p=require("./package.json"); console.log("scripts:",p.scripts)'
+      - name: Build
+        if: steps.detect.outputs.node == 'true'
+        run: |
+          node -e 'const p=require("./package.json"); process.exit(p.scripts?.build ? 0 : 1)' && npm run build
+      - name: Verificar documentação
+        run: test -s README.md
