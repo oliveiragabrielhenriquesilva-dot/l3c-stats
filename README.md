@@ -1,4 +1,24 @@
-# l3c-stats
+# L3C Stats
+
+Projeto de backoffice esportivo, mesa digital de estatísticas e integração de transmissões.
+
+## Escopo
+Gestão de competições e elencos, elegibilidade, cronômetro, operação offline e sincronização, estatísticas e integração de placar.
+
+## Tecnologias previstas
+Next.js, APIs REST e serviços de persistência.
+
+## Minha atuação
+Requisitos, regras esportivas, prototipagem assistida por IA, testes funcionais e diagnóstico de problemas.
+
+## Estado deste repositório
+Repositório inicial de documentação; o código completo da aplicação não está disponível aqui.
+
+---
+
+## Referência operacional preservada
+
+### l3c-stats
 
 Backoffice L3C Stats (Next.js)
 
